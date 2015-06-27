@@ -4,10 +4,10 @@ $(document).ready(function() {
 
         showLoader(true);
         formData = { name: $('#form #name').val(),
-                 email: $('#form #email').val(),   
-                 subject: $('#form #subject').val(),   
-                 message: $('#form #message').val(),   
-        }
+                     email: $('#form #email').val(),   
+                     subject: $('#form #subject').val(),   
+                     message: $('#form #message').val(),   
+                   }
 
         $.post($('#form').attr('action'),
             formData,
