@@ -1,8 +1,5 @@
 <?php
 
-
-    use PHPMailer;
-
     /**
      * Validate and send emails
      */
@@ -18,31 +15,24 @@
          */
         protected $debug = 0;
 
-        /*
-         * Handle of phpMailer
-         */
-        protected $handle;
-
 
         /**
          * @param array $params
          */
         public function __construct(array $params)
         {
-            $this->handle = new PHPMailer;
+            $this->SMTPDebug = $this->debug;
+            $this->isSMTP();
+            $this->SMTPSecure = 'tls';
+            $this->SMTPAuth = true;
 
-            $this->handle->SMTPDebug = $this->debug;
-            $this->handle->isSMTP();
-            $this->handle->SMTPSecure = 'tls';
-            $this->handle->SMTPAuth = true;
-
-            $this->handle->Host = $params['host'];
-            $this->handle->Port = $params['port'];
-            $this->handle->Username = $params['username'];
-            $this->handle->Password = $params['password'];
-            $this->handle->From = $params['from'];
-            $this->handle->FromName = $params['fromName'];
-            $this->handle->addAddress($params['toAddress'], $params['toName']);
+            $this->Host = $params['host'];
+            $this->Port = $params['port'];
+            $this->Username = $params['username'];
+            $this->Password = $params['password'];
+            $this->From = $params['from'];
+            $this->FromName = $params['fromName'];
+            $this->addAddress($params['toAddress'], $params['toName']);
         }
 
         /**
@@ -94,10 +84,10 @@
             if($this->errors)
                 $this->sendJson($this->errors, false);
 
-            $this->handle->Subject = $subject;
-            $this->handle->Body = $body;
+            $this->Subject = $subject;
+            $this->Body = $body;
 
-            if($this->handle->send())
+            if($this->send())
                 $this->sendJson(['message' => 'Mail sent'], true);
             else
                 $this->sendJson(['message' => 'Failed to send mail'], false);
